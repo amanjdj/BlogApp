@@ -23,6 +23,7 @@ router.post("/signup", async (req, res) => {
 router.post("/signin", async (req, res) => {
   const { email, password } = req.body;
   try {
+    // @ts-ignore - matchPasswordAndGenerateToken is a custom static on the User model
     const token = await User.matchPasswordAndGenerateToken(email, password);
 
     return res.cookie("token", token).redirect("/");
