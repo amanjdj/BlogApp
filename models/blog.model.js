@@ -10,6 +10,16 @@ const blogSchema = new Schema(
       type: String,
       required: true,
     },
+    blogQuote: {
+      type: String,
+      required: true,
+    },
+    category: {
+      type: String,
+      enum: ["Design", "Technology", "LifeStyle"],
+      default: "Technology",
+      required: true,
+    },
     coverImageURL: {
       type: String,
       required: false,

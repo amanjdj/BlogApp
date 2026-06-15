@@ -25,6 +25,7 @@ app.use(checkForAuthCookie("token"));
 app.use(express.static(path.resolve("./public")));
 
 app.get("/", async (req, res) => {
+  if (!req.user) return res.render("home.view.ejs", { blogs: [] });
   const allBlogs = await Blog.find({}).sort();
   res.render("home.view.ejs", {
     user: req.user,
