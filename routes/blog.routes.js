@@ -26,7 +26,7 @@ router.get("/add-new", (req, res) => {
 });
 
 router.get("/allBlogs", async (req, res) => {
-  if (!req.user) return res.render("home.view.ejs", { blogs: [] });
+  // if (!req.user) return res.render("home.view.ejs", { blogs: [] });
   const allBlogs = await Blog.find({}).sort();
   return res.render("allBlogs.view.ejs", {
     user: req.user,
@@ -35,10 +35,13 @@ router.get("/allBlogs", async (req, res) => {
 });
 
 router.post("/comment/:blogId", async (req, res) => {
-  await Comment.create({
-    content: re.bosy.content,
+  const newComment = await Comment.create({
+    content: req.body.comment,
     blogId: req.params.blogId,
     createdBy: req.user._id,
+  });
+  await Blog.findByIdAndUpdate(req.params.blogId, {
+    $push: { comments: newComment._id },
   });
 
   return res.redirect(`/blog/${req.params.blogId}`);
@@ -59,9 +62,16 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
 
 router.get("/:id", async (req, res) => {
   const blog = await Blog.findById(req.params.id).populate("createdBy");
+  const comments = await Comment.find({ blogId: blog._id })
+    .populate("createdBy")
+    .sort({ createdAt: -1 });
+
+  const allBlogs = await Blog.find({}).sort();
   return res.render("blog.view.ejs", {
     user: req.user,
     blog,
+    blogs: allBlogs,
+    comments,
   });
 });
 

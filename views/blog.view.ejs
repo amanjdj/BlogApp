@@ -144,6 +144,203 @@
       </div>
     </section>
 
+
+    <!-- Comments Section -->
+
+ <!-- COMMENTS SECTION -->
+
+<section class="py-5">
+
+  <div class="container">
+
+    <div class="row justify-content-center">
+
+      <div class="col-lg-8">
+
+        <!-- Title -->
+
+        <div class="mb-5">
+
+          <h2 class="playfair fw-bold display-6">
+            Comments
+          </h2>
+
+          <p class="text-secondary">
+            Join the discussion and share your thoughts.
+          </p>
+
+        </div>
+
+        <!-- Add Comment -->
+
+        <% if (locals.user) { %>
+          <div class="card border-0 shadow-sm rounded-4 mb-5">
+
+          <div class="card-body p-4">
+
+    
+              <form action="/blog/comment/<%= blog._id %>" method="post">
+
+
+              <div class="mb-4">
+
+                <label class="form-label fw-semibold" for="comment">
+                  Comment
+                </label>
+
+                <textarea
+                  rows="5"
+                  id="comment"
+                  name="comment"
+                  class="form-control rounded-4"
+                  placeholder="Write your comment..."
+                  required
+                ></textarea>
+
+              </div>
+
+              <button class="btn btn-dark px-4 py-2 rounded-pill">
+                Post Comment
+              </button>
+
+            </form>
+            
+
+           
+
+          </div>
+
+        </div>
+        <% } %>
+
+
+       
+
+        <!-- Comments Wrapper -->
+     
+
+        <div id="commentsContainer">
+
+          <!-- Visible Comments -->
+
+          <% comments.slice(0,2).forEach(comment => { %>
+           
+              <div class="card border-0 shadow-sm rounded-4 mb-4">
+
+            <div class="card-body p-4">
+
+              <div class="d-flex align-items-center mb-3">
+                  
+                <img
+                  src="<%= comment.createdBy.profileImageURL %>"
+                  class="rounded-circle me-3"
+                  alt=""
+                  width="70px"
+                >
+
+                <div>
+
+                  <h6 class="mb-0 fw-bold">
+                    <%= comment.createdBy.fullName %>
+                  </h6>
+
+                  <small class="text-secondary">
+                    <%= comment.createdAt
+                    
+                    %>
+                  </small>
+
+                </div>
+
+              </div>
+
+              <p class="text-secondary mb-0">
+                <%= comment.content %>
+              </p>
+
+            </div>
+
+          </div>
+          <% }) %>
+
+          
+
+          <!-- Hidden Comments -->
+
+          
+          <div id="moreComments" class="d-none">
+               <% comments.slice(2).forEach(comment => { %>
+
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+
+              <div class="card-body p-4">
+
+                <div class="d-flex align-items-center mb-3">
+
+                  <img
+                    src="<%= comment.createdBy.profileImageURL %>"
+                    class="rounded-circle me-3"
+                    alt=""
+                    width="70px"
+                  >
+
+                  <div>
+
+                    <h6 class="mb-0 fw-bold">
+                      <%= comment.createdBy.fullName %>
+                    </h6>
+
+                    <small class="text-secondary">
+                      <%= comment.createdAt %>
+                    </small>
+
+                  </div>
+
+                </div>
+
+                <p class="text-secondary mb-0">
+                  <%= comment.content %>
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <% }) %>
+          </div>
+
+         
+
+        </div>
+
+        <!-- Show More Button -->
+
+        <div class="text-center mt-4">
+
+          <button
+            id="toggleCommentsBtn"
+            class="btn btn-outline-dark rounded-pill px-4 py-2"
+          >
+            Show All Comments
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<!-- SCRIPT -->
+
+
+
+
+
     <!-- Related Blogs -->
 
     <section class="pb-5">
@@ -153,75 +350,35 @@
         </div>
 
         <div class="row g-4">
-          <!-- Card 1 -->
-
-          <div class="col-md-6 col-lg-4">
+      
+          
+          <% blogs.filter(bl=>bl._id.toString()!==blog._id.toString()).slice(0,3).forEach(bl => { %>
+           <div class="col-md-6 col-lg-4">
             <div class="card shadow-sm custom-card h-100">
               <img
-                src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?q=80&w=1200&auto=format&fit=crop"
+                src="/<%= bl.coverImageURL %>"
                 class="card-img-top"
                 alt=""
               />
 
               <div class="card-body p-4">
-                <p class="category mb-2">Design</p>
+                <p class="category mb-2"><%= bl.category %></p>
 
                 <h4 class="playfair fw-bold mb-3">
-                  Creating Elegant Interfaces
+                  <%= bl.title %>
                 </h4>
 
-                <a href="#" class="text-dark fw-semibold text-decoration-none">
+                <a href="<%=bl._id  %>" class="text-dark fw-semibold text-decoration-none">
                   Read More →
                 </a>
               </div>
             </div>
           </div>
+          <% }) %>
 
-          <!-- Card 2 -->
+      
 
-          <div class="col-md-6 col-lg-4">
-            <div class="card shadow-sm custom-card h-100">
-              <img
-                src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
-                class="card-img-top"
-                alt=""
-              />
-
-              <div class="card-body p-4">
-                <p class="category mb-2">Lifestyle</p>
-
-                <h4 class="playfair fw-bold mb-3">Beauty in Simplicity</h4>
-
-                <a href="#" class="text-dark fw-semibold text-decoration-none">
-                  Read More →
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Card 3 -->
-
-          <div class="col-md-6 col-lg-4">
-            <div class="card shadow-sm custom-card h-100">
-              <img
-                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=1200&auto=format&fit=crop"
-                class="card-img-top"
-                alt=""
-              />
-
-              <div class="card-body p-4">
-                <p class="category mb-2">Coding</p>
-
-                <h4 class="playfair fw-bold mb-3">
-                  Writing Cleaner Frontend Code
-                </h4>
-
-                <a href="#" class="text-dark fw-semibold text-decoration-none">
-                  Read More →
-                </a>
-              </div>
-            </div>
-          </div>
+  
         </div>
       </div>
     </section>
@@ -236,8 +393,36 @@
 
     <!-- Bootstrap JS -->
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
-    <%- include('./partials/scripts.ejs')%>
-  </body>
+<%- include('./partials/scripts.ejs')%>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+  const toggleBtn = document.getElementById("toggleCommentsBtn");
+  const moreComments = document.getElementById("moreComments");
+
+  let expanded = false;
+
+  toggleBtn.addEventListener("click", () => {
+
+    expanded = !expanded;
+
+    if(expanded){
+
+      moreComments.classList.remove("d-none");
+      toggleBtn.innerText = "Show Less";
+
+    }else{
+
+      moreComments.classList.add("d-none");
+      toggleBtn.innerText = "Show All Comments";
+
+    }
+
+  });
+
+</script>
+  
+</body>
 </html>
